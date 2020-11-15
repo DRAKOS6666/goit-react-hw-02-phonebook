@@ -14,6 +14,7 @@ export default class App extends Component {
   };
 
   static propTypes = {
+    filter: propTypes.string,
     contacts: propTypes.arrayOf(
       propTypes.shape({
         id: propTypes.string.isRequired,
@@ -41,10 +42,13 @@ export default class App extends Component {
 
   addContact = ({ name, number }) => {
     if (name !== '' && this.isUnique(name)) {
-      const contactsArr = this.state.contacts;
       const id = uuidv4();
-      const newContact = [{ name, number, id }];
-      this.setState({ contacts: [...contactsArr, ...newContact] });
+      const newContact = { name, number, id };
+      this.setState(prevState => {
+        return {
+          contacts: [...prevState.contacts, newContact],
+        };
+      });
     }
     if (!this.isUnique(name)) {
       alert(`${name} is already in contact`);
