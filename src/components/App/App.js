@@ -1,29 +1,12 @@
 import React, { Component } from 'react';
-import propTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
-import ContactForm from './components/ContactForm/ContactForm';
-import ContactList from './components/ContactList/ContactList';
-import Filter from './components/Filter/Filter';
+import ContactForm from '../ContactForm/ContactForm';
+import ContactList from '../ContactList/ContactList';
+import Filter from '../Filter/Filter';
 
 import './App.scss';
 
 export default class App extends Component {
-  static defaultProps = {
-    filter: '',
-    contacts: [],
-  };
-
-  static propTypes = {
-    filter: propTypes.string,
-    contacts: propTypes.arrayOf(
-      propTypes.shape({
-        id: propTypes.string.isRequired,
-        name: propTypes.string.isRequired,
-        number: propTypes.string,
-      }),
-    ),
-  };
-
   state = {
     contacts: [],
     filter: '',
@@ -34,10 +17,7 @@ export default class App extends Component {
   };
 
   isUnique = name => {
-    const findResult = this.state.contacts.find(
-      contact => contact.name === name,
-    );
-    return findResult === undefined ? true : name !== findResult.name;
+    return !this.state.contacts.some(contact => contact.name === name);
   };
 
   addContact = ({ name, number }) => {
@@ -64,18 +44,29 @@ export default class App extends Component {
   };
 
   render() {
+    const { contacts, filter } = this.state;
+
+    const filteredContacts = contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase()),
+    );
+
     return (
       <div className="wrapper">
         <h1>Phonebook</h1>
         <ContactForm addContact={this.addContact} />
 
         <h2>Contacts</h2>
-        <Filter onFindItem={this.findContact} />
-        <ContactList
-          list={this.state.contacts}
-          filter={this.state.filter}
-          deleteContact={this.deleteContact}
-        />
+        {contacts.length > 0 ? (
+          <Filter onFindItem={this.findContact} />
+        ) : (
+          <h3>Please add contacts...</h3>
+        )}
+        {contacts.length > 0 && (
+          <ContactList
+          contacts={filteredContacts}
+            deleteContact={this.deleteContact}
+          />
+        )}
       </div>
     );
   }

@@ -3,14 +3,8 @@ import propTypes from 'prop-types';
 import './ContactForm.scss';
 
 export default class ContactForm extends Component {
-  static defaultProps = {
-    name: '',
-    number: '',
-  };
-
   static propTypes = {
-    name: propTypes.string,
-    number: propTypes.string,
+    addContact: propTypes.func.isRequired,
   };
 
   state = {
@@ -18,12 +12,11 @@ export default class ContactForm extends Component {
     number: '',
   };
 
-  handleNameChange = event => {
-    this.setState({ name: event.target.value });
-  };
-  handleNumberChange = event => {
-    this.setState({ number: event.target.value });
-  };
+
+  handleInputChange = ({target}) => {
+    const {name, value} = target;
+   this.setState({[name]: value})
+  }
 
   handleSubmit = event => {
     event.preventDefault();
@@ -41,17 +34,19 @@ export default class ContactForm extends Component {
         <label>
           Name:
           <input
+            name="name"
             className="formInput"
             type="text"
-            onChange={this.handleNameChange}
+            onChange={this.handleInputChange}
           />
         </label>
         <label>
           Number:
           <input
+            name="number"
             className="formInput"
             type="text"
-            onChange={this.handleNumberChange}
+            onChange={this.handleInputChange}
           />
         </label>
         <input className="submitBtn" type="submit" value="Add contact" />
