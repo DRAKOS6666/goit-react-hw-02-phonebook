@@ -23,8 +23,4 @@ ContactListItem.propTypes = {
   onClickDelete: propTypes.func.isRequired,
 };
 
-ContactListItem.defaultProps = {
-  number: '',
-};
-
 export default ContactListItem;
