@@ -57,15 +57,15 @@ export default class App extends Component {
 
         <h2>Contacts</h2>
         {contacts.length > 0 ? (
-          <Filter onFindItem={this.findContact} />
+          <>
+            <Filter onFindItem={this.findContact} />
+            <ContactList
+              contacts={filteredContacts}
+              deleteContact={this.deleteContact}
+            />
+          </>
         ) : (
           <h3>Please add contacts...</h3>
-        )}
-        {contacts.length > 0 && (
-          <ContactList
-          contacts={filteredContacts}
-            deleteContact={this.deleteContact}
-          />
         )}
       </div>
     );
