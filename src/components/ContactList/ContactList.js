@@ -4,18 +4,18 @@ import ContactListItem from './ContactListItem/ContactListItem';
 
 import './ContactList.scss';
 
-
-function ContactList({contacts, deleteContact}) {
- return contacts.length === 0 ? <h4>Nothing found</h4> :
-   (<ul className="contactList">
+function ContactList({ contacts, deleteContact }) {
+  return contacts.length === 0 ? (
+    <h4>Nothing found</h4>
+  ) : (
+    <ul className="contactList">
       {contacts.map(contact => (
         <li className="contactListItem" key={contact.id}>
           <ContactListItem contact={contact} onClickDelete={deleteContact} />
         </li>
       ))}
-    </ul>)
-  
-   
+    </ul>
+  );
 }
 
 ContactList.propTypes = {
@@ -27,10 +27,6 @@ ContactList.propTypes = {
     }),
   ).isRequired,
   deleteContact: propTypes.func.isRequired,
-};
-
-ContactList.defaultProps = {
-  number: '',
 };
 
 export default ContactList;
